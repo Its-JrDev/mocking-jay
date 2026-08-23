@@ -1,0 +1,304 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #0a0a0b;
+  --color-panel: #141416;
+  --color-coal: #0d0d0e;
+  --color-paper: #f1efe9;
+  --color-bone: #f5f4f1;
+  --color-fog: #a5a19a;
+  --color-smoke: #6f6c66;
+  --color-blood: #dc2626;
+  --color-blood-bright: #ed3a2f;
+  --color-blood-deep: #b91c1c;
+
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+
+  --ease-brand: cubic-bezier(0.22, 0.61, 0.2, 1);
+
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-rise: rise 0.8s var(--ease-brand) var(--d, 0s) both;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+  }
+
+  body {
+    @apply bg-ink font-body text-bone text-base leading-[1.6] antialiased overflow-x-hidden;
+  }
+
+  ::selection {
+    background: var(--color-blood);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blood);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0c0c0d;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2b2b2e;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-blood);
+  }
+
+  .no-scroll {
+    overflow: hidden;
+  }
+
+  .is-hidden {
+    display: none !important;
+  }
+}
+
+@layer components {
+  .skip-link {
+    @apply fixed -top-17.5 left-4 z-100 bg-blood px-[1.3em] py-[0.75em] font-semibold text-white transition-[top] duration-200;
+  }
+
+  .skip-link:focus {
+    top: 14px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s var(--ease-brand) var(--d, 0s),
+      transform 0.7s var(--ease-brand);
+  }
+
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-5 whitespace-nowrap border border-transparent px-[1.7em] py-[1.05em] text-[0.8rem] leading-none font-bold tracking-[0.09em] uppercase select-none transition-[transform,translate,background-color,color,border-color,box-shadow] duration-250 ease-brand;
+  }
+
+  .btn svg {
+    @apply transition-[translate] duration-250 ease-brand;
+  }
+
+  .btn:hover svg {
+    @apply translate-x-0.75;
+  }
+
+  .btn-solid {
+    @apply bg-blood text-white;
+  }
+
+  .btn-solid:hover {
+    @apply -translate-y-0.75 bg-blood-deep shadow-[0_14px_34px_-12px_rgba(220,38,38,0.45)];
+  }
+
+  .btn-solid:active {
+    @apply translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply border-white/26 text-bone;
+  }
+
+  .btn-ghost:hover {
+    @apply -translate-y-0.75 border-white bg-white text-ink;
+  }
+
+  .btn-light-outline {
+    @apply border-white/85 text-white;
+  }
+
+  .btn-light-outline:hover {
+    @apply -translate-y-0.75 bg-white text-blood;
+  }
+
+  .btn-xl {
+    @apply px-[2.2em] py-[1.25em] text-[0.95rem];
+  }
+
+  .btn-sm {
+    @apply px-[1.3em] py-[0.85em] text-[0.72rem];
+  }
+
+  .btn-block {
+    @apply w-full;
+  }
+
+  .brand {
+    @apply relative inline-flex items-center gap-3;
+  }
+
+  .brand-mark {
+    @apply size-7 bg-blood [clip-path:polygon(0_0,100%_0,100%_62%,62%_100%,0_100%)];
+  }
+
+  .brand-text {
+    @apply flex flex-col leading-none;
+  }
+
+  .brand-text strong {
+    @apply font-display text-[1.1rem] font-normal tracking-[0.03em] uppercase;
+  }
+
+  .brand-text small {
+    @apply mt-0.75 font-mono text-[0.52rem] tracking-[0.42em] uppercase text-fog;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-2.5 border-b-2 border-blood pb-1.5 text-[0.8rem] font-bold tracking-[0.09em] uppercase transition-colors duration-250;
+  }
+
+  .link-arrow svg {
+    @apply transition-[rotate] duration-300 ease-brand;
+  }
+
+  .link-arrow:hover {
+    @apply text-blood-deep;
+  }
+
+  .link-arrow.open svg {
+    @apply rotate-180;
+  }
+
+  .social-btn {
+    @apply grid size-10 place-items-center border border-white/26 text-fog transition-[color,border-color,background-color,translate] duration-250 ease-brand;
+  }
+
+  .social-btn:hover {
+    @apply -translate-y-0.75 border-blood bg-blood/14 text-white;
+  }
+
+  .mobile-menu {
+    @apply invisible fixed inset-0 z-55 bg-[#080809]/97 pt-26.5 pb-11 opacity-0 backdrop-blur-[20px];
+    transition:
+      opacity 0.35s var(--ease-brand),
+      visibility 0s linear 0.35s;
+  }
+
+  .mobile-menu.open {
+    @apply visible opacity-100;
+    transition-delay: 0s;
+  }
+
+  .burger {
+    @apply relative z-60 hidden size-11 max-[940px]:flex flex-col items-center justify-center gap-1.75;
+  }
+
+  .burger span {
+    @apply block h-0.5 w-6 bg-bone transition-[transform,opacity] duration-350 ease-brand;
+  }
+
+  .burger.open span:first-child {
+    transform: translateY(4.5px) rotate(45deg);
+  }
+
+  .burger.open span:last-child {
+    transform: translateY(-4.5px) rotate(-45deg);
+  }
+
+  .dialog {
+    width: min(540px, 92vw);
+    max-height: min(720px, calc(100dvh - 32px));
+    @apply overflow-y-auto overscroll-contain border border-white/26 bg-[#101012] p-0 text-bone;
+  }
+
+  .dialog::backdrop {
+    @apply bg-[#040405]/70 backdrop-blur-sm;
+  }
+
+  .field > label {
+    @apply mb-2.25 block font-mono text-[0.62rem] font-bold tracking-[0.18em] uppercase text-fog;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    @apply w-full border border-white/12 bg-[#0b0b0c] px-[1em] py-[0.85em] text-[0.95rem] text-bone outline-none transition-colors duration-200;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    @apply border-blood;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    @apply text-smoke;
+  }
+
+  .field select {
+    appearance: none;
+    padding-right: 2.6em;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23a5a19a' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+  }
+
+  .field select option {
+    background: #141416;
+    color: #f5f4f1;
+  }
+
+  .field textarea {
+    @apply min-h-24 resize-y;
+  }
+
+  .field.is-hidden {
+    @apply hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal,
+  [class*='animate-rise'] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
