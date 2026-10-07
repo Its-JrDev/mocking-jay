@@ -42,7 +42,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 90px;
+  }
+
+  section[id],
+  footer[id],
+  main[id] {
+    scroll-margin-top: 74px;
   }
 
   body {
@@ -138,12 +143,20 @@
     @apply -translate-y-0.75 border-white bg-white text-ink;
   }
 
+  .btn-ghost:active {
+    @apply translate-y-0 border-white bg-white text-ink;
+  }
+
   .btn-light-outline {
     @apply border-white/85 text-white;
   }
 
   .btn-light-outline:hover {
     @apply -translate-y-0.75 bg-white text-blood;
+  }
+
+  .btn-light-outline:active {
+    @apply translate-y-0 bg-white text-blood;
   }
 
   .btn-xl {
@@ -186,7 +199,8 @@
     @apply transition-[rotate] duration-300 ease-brand;
   }
 
-  .link-arrow:hover {
+  .link-arrow:hover,
+  .link-arrow:active {
     @apply text-blood-deep;
   }
 
@@ -200,6 +214,10 @@
 
   .social-btn:hover {
     @apply -translate-y-0.75 border-blood bg-blood/14 text-white;
+  }
+
+  .social-btn:active {
+    @apply translate-y-0 border-blood bg-blood/14 text-white;
   }
 
   .mobile-menu {
@@ -233,6 +251,7 @@
   .dialog {
     width: min(540px, 92vw);
     max-height: min(720px, calc(100dvh - 32px));
+    margin: auto;
     @apply overflow-y-auto overscroll-contain border border-white/26 bg-[#101012] p-0 text-bone;
   }
 

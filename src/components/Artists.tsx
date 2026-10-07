@@ -15,10 +15,16 @@ function ArtistCard({
   artist,
   index,
   onBook,
+  preview,
+  onPreview,
+  touch,
 }: {
   artist: Artist
   index: number
   onBook: (artist?: string) => void
+  preview: boolean
+  onPreview: () => void
+  touch: boolean
 }) {
   const ref = useReveal<HTMLButtonElement>()
 
@@ -28,12 +34,17 @@ function ArtistCard({
       ref={ref}
       className="group/card reveal block w-full text-left min-[1101px]:even:mt-13"
       style={revealDelay((index % 4) * 80)}
-      onClick={() => onBook(artist.name)}
-      aria-label={`Book ${artist.name} — ${artist.tag.toLowerCase()} from ${artist.city}`}
+      data-preview={preview}
+      onClick={() => (touch && !preview ? onPreview() : onBook(artist.name))}
+      aria-label={
+        touch && !preview
+          ? `Preview ${artist.name} — tap again to book ${artist.tag.toLowerCase()} from ${artist.city}`
+          : `Book ${artist.name} — ${artist.tag.toLowerCase()} from ${artist.city}`
+      }
     >
-      <span className="relative block aspect-3/4verflow-hidden bg-[#dcd8cf]">
+      <span className="relative block aspect-3/4 overflow-hidden bg-[#dcd8cf]">
         <img
-          className="absolute inset-0 h-full w-full object-cover object-top grayscale contrast-[1.06] transition-[filter,scale] duration-500 ease-brand group-hover/card:scale-[1.04] group-hover/card:grayscale-0"
+          className={`absolute inset-0 h-full w-full object-cover object-top grayscale contrast-[1.06] transition-[filter,scale] duration-500 ease-brand group-hover/card:scale-[1.04] group-hover/card:grayscale-0 ${preview ? 'scale-[1.04] grayscale-0' : ''}`}
           src={artist.image}
           alt=""
           loading="lazy"
@@ -64,8 +75,18 @@ function ArtistCard({
 
 export function Artists({ onBook }: ArtistsProps) {
   const [expanded, setExpanded] = useState(false)
-  const headRef = useReveal<HTMLDivElement>()
-  const footRef = useReveal<HTMLDivElement>()
+  const [previewName, setPreviewName] = useState<string | null>(null)
+  const [touch] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches,
+  )
+  const headTitleRef = useReveal<HTMLDivElement>()
+  const headCtaRef = useReveal<HTMLDivElement>()
+  const footRef = useReveal<HTMLParagraphElement>()
+
+  const handleBook = (artist?: string) => {
+    setPreviewName(null)
+    onBook(artist)
+  }
 
   return (
     <section
@@ -73,14 +94,14 @@ export function Artists({ onBook }: ArtistsProps) {
       id="artists"
     >
       <div className="mx-auto w-[min(1180px,92vw)]">
-        <div className="mb-13 flex flex-wrap items-end justify-between gap-6" ref={headRef}>
-          <div className="reveal">
+        <div className="mb-13 flex flex-wrap items-end justify-between gap-6">
+          <div className="reveal" ref={headTitleRef}>
             <p className={kickerClasses}>The roster</p>
             <h2 className="mt-4.5 font-display text-[clamp(2.5rem,5.4vw,4.2rem)] leading-[0.96] font-normal tracking-[-0.01em] uppercase">
               Artists that move different
             </h2>
           </div>
-          <div className="reveal" style={revealDelay(120)}>
+          <div className="reveal" ref={headCtaRef} style={revealDelay(120)}>
             <button
               type="button"
               className={`link-arrow${expanded ? ' open' : ''}`}
@@ -95,20 +116,37 @@ export function Artists({ onBook }: ArtistsProps) {
 
         <div className="grid grid-cols-4 gap-x-4.5 gap-y-12 max-[1100px]:grid-cols-2 max-[1100px]:gap-x-4 max-[1100px]:gap-y-10 max-[560px]:grid-cols-1 max-[560px]:gap-8.5">
           {featuredArtists.map((artist, index) => (
-            <ArtistCard key={artist.name} artist={artist} index={index} onBook={onBook} />
+            <ArtistCard
+              key={artist.name}
+              artist={artist}
+              index={index}
+              onBook={handleBook}
+              preview={previewName === artist.name}
+              onPreview={() => setPreviewName(artist.name)}
+              touch={touch}
+            />
           ))}
         </div>
 
         {expanded && (
           <div className="mt-12 grid grid-cols-4 gap-x-4.5 gap-y-12 max-[1100px]:mt-10 max-[1100px]:grid-cols-2 max-[1100px]:gap-x-4 max-[1100px]:gap-y-10 max-[560px]:grid-cols-1 max-[560px]:gap-8.5">
             {extendedArtists.map((artist, index) => (
-              <ArtistCard key={artist.name} artist={artist} index={index + 4} onBook={onBook} />
+              <ArtistCard
+                key={artist.name}
+                artist={artist}
+                index={index + 4}
+                onBook={handleBook}
+                preview={previewName === artist.name}
+                onPreview={() => setPreviewName(artist.name)}
+                touch={touch}
+              />
             ))}
           </div>
         )}
 
-        <div className="mt-14.5 flex justify-center" ref={footRef}>
+        <div className="mt-14.5 flex justify-center">
           <p
+            ref={footRef}
             className="reveal font-mono text-[0.66rem] tracking-[0.14em] uppercase text-[#6b675f]"
           >
             And more — new voices join the label every season.

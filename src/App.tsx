@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { About } from './components/About'
 import { Artists } from './components/Artists'
 import { BookingModal } from './components/BookingModal'
@@ -18,6 +18,25 @@ function App() {
   }, [])
 
   const closeBooking = useCallback(() => setBooking(null), [])
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash.slice(1)
+      if (!hash) return
+      document.getElementById(hash)?.scrollIntoView({ block: 'start' })
+    }
+    const frame = requestAnimationFrame(scrollToHash)
+    if (document.fonts) {
+      document.fonts.ready.then(scrollToHash).catch(() => {})
+    }
+    const fallback = window.setTimeout(scrollToHash, 500)
+    window.addEventListener('hashchange', scrollToHash)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.clearTimeout(fallback)
+      window.removeEventListener('hashchange', scrollToHash)
+    }
+  }, [])
 
   return (
     <>

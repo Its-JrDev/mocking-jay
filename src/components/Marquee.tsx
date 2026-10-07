@@ -19,8 +19,8 @@ export function Marquee() {
       className="group overflow-hidden border-b border-white/12 bg-coal py-4"
       aria-hidden="true"
     >
-      <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
-        {[0, 1].map((group) => (
+      <div className="flex w-max animate-marquee [@media(hover:hover)]:group-hover:[animation-play-state:paused]">
+        {[0, 1, 2, 3].map((group) => (
           <ul className="flex shrink-0 items-center" key={group}>
             {words.map((word) => (
               <li className={itemClasses} key={word}>

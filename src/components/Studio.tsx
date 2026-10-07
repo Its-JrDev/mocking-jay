@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { revealDelay, useReveal } from '../hooks/useReveal'
 import { ArrowRightIcon } from './icons'
 
@@ -6,29 +7,38 @@ interface StudioProps {
 }
 
 export function Studio({ onBook }: StudioProps) {
-  const mediaRef = useReveal<HTMLDivElement>()
   const copyRef = useReveal<HTMLDivElement>()
+  const [mediaLoaded, setMediaLoaded] = useState(false)
 
   return (
     <section
-      className="grid min-h-[min(86svh,840px)] grid-cols-[minmax(0,55%)_minmax(0,45%)] bg-blood text-white max-[940px]:grid-cols-1"
+      className="grid min-h-[min(86svh,840px)] grid-cols-[minmax(0,55%)_minmax(0,45%)] bg-blood text-white max-[940px]:relative max-[940px]:isolate max-[940px]:grid-cols-1 max-[940px]:overflow-hidden max-[940px]:min-h-[calc(100svh-74px)]"
       id="studio"
     >
-      <div
-        className="relative overflow-hidden reveal max-[940px]:min-h-[52svh] after:absolute after:inset-0 after:content-[''] after:bg-[linear-gradient(to_right,rgba(220,38,38,0)_85%,var(--color-blood)_99%)] max-[940px]:after:bg-[linear-gradient(to_bottom,rgba(10,10,11,0)_32%,rgba(10,10,11,0.78)_64%,rgba(10,10,11,0)_97%),linear-gradient(to_bottom,rgba(220,38,38,0)_58%,var(--color-blood)_99%)]"
-        ref={mediaRef}
-      >
+      <div className="relative isolate overflow-hidden bg-blood max-[940px]:absolute max-[940px]:inset-0 max-[940px]:h-full max-[940px]:min-h-0 after:pointer-events-none after:absolute after:inset-0 after:content-[''] after:bg-[linear-gradient(to_right,rgba(220,38,38,0)_85%,var(--color-blood)_99%)] max-[940px]:after:bg-[linear-gradient(to_bottom,rgba(10,10,11,0.62),rgba(10,10,11,0.55)_42%,rgba(10,10,11,0.8))]">
         <img
-          className="absolute inset-0 h-full w-full object-cover grayscale contrast-[1.08] mix-blend-multiply mask-[linear-gradient(to_right,#000_50%,transparent_97%)] max-[940px]:mask-[linear-gradient(to_bottom,#000_45%,transparent_95%)]"
+          className="absolute inset-0 h-full w-full object-cover opacity-0 grayscale contrast-[1.08] transition-opacity duration-700 ease-out mask-[linear-gradient(to_right,#000_50%,transparent_97%)] data-[loaded=true]:opacity-100 max-[940px]:mask-none"
           src="/images/studio-mic.jpg"
           alt="Condenser microphone inside the Mocking by Jay studio"
           loading="lazy"
+          decoding="async"
+          data-loaded={mediaLoaded}
+          onLoad={(event) => {
+            if (event.currentTarget.complete && event.currentTarget.naturalWidth > 0) {
+              setMediaLoaded(true)
+            }
+          }}
           onError={(event) => event.currentTarget.classList.add('is-hidden')}
+        />
+        <div
+          aria-hidden="true"
+          data-loaded={mediaLoaded}
+          className="pointer-events-none absolute inset-0 bg-blood opacity-0 mix-blend-multiply transition-opacity duration-700 ease-out mask-[linear-gradient(to_right,#000_50%,transparent_97%)] data-[loaded=true]:opacity-100 max-[940px]:mask-none"
         />
       </div>
 
       <div
-        className="reveal flex flex-col items-start justify-center gap-[clamp(22px,3.6vh,40px)] pt-[clamp(56px,8vw,110px)] pr-[max(5vw,calc((100vw-min(1180px,92vw))/2))] pb-[clamp(56px,8vw,110px)] pl-[clamp(30px,4.5vw,72px)] max-[940px]:pt-13 max-[940px]:pr-[7vw] max-[940px]:pb-17 max-[940px]:pl-[7vw]"
+        className="reveal flex flex-col items-start justify-center gap-[clamp(22px,3.6vh,40px)] pt-[clamp(56px,8vw,110px)] pr-[max(5vw,calc((100vw-min(1180px,92vw))/2))] pb-[clamp(56px,8vw,110px)] pl-[clamp(30px,4.5vw,72px)] max-[940px]:relative max-[940px]:z-10 max-[940px]:min-h-[calc(100svh-74px)] max-[940px]:justify-center max-[940px]:gap-[clamp(16px,2.4vh,24px)] max-[940px]:pt-13 max-[940px]:pr-[7vw] max-[940px]:pb-17 max-[940px]:pl-[7vw]"
         ref={copyRef}
         style={revealDelay(140)}
       >
