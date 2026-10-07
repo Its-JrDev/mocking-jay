@@ -2,10 +2,10 @@
 
 > **Real rap. Real artists. Booked here.** A high-impact landing page for an independent rap label: roster, studio sessions, and direct booking — no middlemen.
 
-![React](https://img.shields.io/badge/React-19-61dafb?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss)
-![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite)
+![React](https://img.shields.io/badge/React-19-61dafb?logo=react&style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&style=flat-square)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&style=flat-square)
+![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&style=flat-square)
 
 ## What it is
 
