@@ -50,16 +50,36 @@ npm run lint     # eslint
 ## Project structure
 
 ```
-public/
-  images/            # hero, roster, studio photography
-  favicon.svg        # brand mark (notched red block)
-src/
-  components/        # Hero, Marquee, Artists, About, Studio,
-                     # FinalCta, Footer, Header, BookingModal
-  data/roster.ts     # artist data
-  hooks/useReveal.ts # scroll-reveal observer + delay helper
-  App.tsx            # composition + booking + hash navigation
-  index.css          # theme, buttons, reveal, dialog styles
+├── eslint.config.js
+├── index.html
+├── package.json
+├── public/
+│   ├── favicon.svg              # brand mark (notched red block)
+│   └── images/                  # hero, roster, studio photography
+├── src/
+│   ├── App.tsx                  # composition + booking + hash navigation
+│   ├── main.tsx
+│   ├── index.css                # theme, buttons, reveal, dialog styles
+│   ├── components/
+│   │   ├── About.tsx
+│   │   ├── Artists.tsx
+│   │   ├── BookingModal.tsx
+│   │   ├── FinalCta.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── Hero.tsx
+│   │   ├── Marquee.tsx
+│   │   ├── SocialLinks.tsx
+│   │   ├── Studio.tsx
+│   │   └── icons.tsx
+│   ├── data/
+│   │   └── roster.ts            # artist data
+│   └── hooks/
+│       └── useReveal.ts         # scroll-reveal observer + delay helper
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
 ## Design notes
